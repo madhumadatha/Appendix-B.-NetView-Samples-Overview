@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="24wrd.css">
+    </head>
+    <div class="d2"></div>
+    <h1 style="color:steelblue;" style="font-size: 80px;" class="A B">Appendix B. NetView Samples Overview</h1>
+    <p class="A">All of the sample definitions listed in this book (and some not listed) are contained on the NetView distribution media. These definitions are distributed as members of the following data sets:</p>
+    <li class="A">NETVIEW.V6R3M0.CNMSAMP</li>
+    <li class="A">NETVIEW.V6R3M0.DSIPARM</li>
+    <li class="A">NETVIEW.V6R3M0.DSIPRF</li>
+    <li class="A">NETVIEW.V6R3M0.SAQNPARM</li>
+    <li class="A">NETVIEW.V6R3M0.SAQNSAMP</li>
+    <li class="A">NETVIEW.V6R3M0.SDSIMSG1</li>
+    <li class="A">NETVIEW.V6R3M0.SDSIOPEN</li>
+    <p class="A">Each samples name begins with AAU, BNJ, CNMB, CNMCM, CNMS, DSI, DUIF, EKG, EZL, FKV, FKX, or FLC, and can have a maximum length of 8 characters. The last four or five characters of all samples vary. Table 17 on page 101 summarizes the samples distributed with the NetView program.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\101.png" class="A"><br>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\102.png" class="A">
+    <p class="A"><q>Appendix C, “NetView Samples Reference,” on page 119</q>lists all the samples on the distribution media and a brief description of each sample. Use CNMSJ003 to copy sample members into the correct libraries where they can be used by the NetView and VTAM programs. Sometimes, you must rename the samples to meet NetView or VTAM program requirements. For example, VTAM start options are distributed on the samples media in CNMS0010. However, the VTAM program requires that you name this member ATCSTR00. CNMSJ003 copies CNMS0010 into the VTAM library as ATCSTR00.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\102.1.png" class="A">
+    <p class="A">The sample network uses a standard naming convention for the NCP and VTAM definitions.</p><br>
+    <h2 style="color:steelblue;" style="font-size:25px;" class="A"><b>VTAM Major Node Names</b><hr></h2><br>
+    <p class="A"><q>Table 18 on page 102 </q>lists the names of the VTAM major nodes in the sample network(NETA).</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\102.0.png" class="A"><br>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\102.3.png" class="A">
+    <p class="A"><q>Table 19 on page 103</q>lists the names of the VTAM major nodes in the sample network (NETB). The actual samples are not shown in this book, however, their NETA equivalents are listed in the table for easy reference.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\103.png" class="A"><br>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\104.png" class="A">
+    <h3 style="color:steelblue;" style="font-size:25px;" class="A"><b>VTAM Definitions</b><hr></h3>
+    <p class="A">You can modify the sample network definitions to fit your network. This process includes modifying VTAM definition statements and VTAM tables.</p>
+    <h4 style="font-size: 20px;" class="A"><u><b>VTAM</b> Definition <b>Statements</b></u></h4>
+    <p class="A">After installing the NetView program, begin to define the network, starting with VTAM definitions. Define the programs, devices, and paths to other nodes in the network. Define these by coding major nodes.</p>
+    <p class="A">A <b>major node</b>is a representation of a set of resources. Specifically, a major node is a set of VTAM definition statements. For MVS, a VTAM major node is a member of the partitioned data set identified on the VTAMLST DD statement in the VTAM start procedure.</p>
+    <p class="A">When you have coded the necessary major nodes, the VTAM operator can activate or deactivate resources in the network by activating and deactivating major or minor nodes. (A <b>minor node</b> is one resource in a major node.) For example, at A01MPU, local terminals are defined in the major node named A01LOCAL. When the VTAM program is active, the VTAM operator can use the following VARY ACT command:</p>
+    <p style="background-color: lightgray" class="A">v net,act,id=a01local</p>
+    <p style="background-color: lightgray" class="A">v net,inact,id=a01local</p>
+    <h5 style="font-size: 20px;" Class="A">Configuration <b>Lists</b></h5>
+    <p class="A">The major nodes you have defined are not processed by the VTAM program until you activate them. Use one of the following two ways to activate these nodes:</p>
+    <ol class="A"><li>Have the VTAM operator enter a VARY ACT command for each major node.</li>
+    <li>Include the major node names in a configuration list. When you start the VTAM program, it automatically activates every node that you have listed if CONFIG=xx is coded in your start list, where xx is the last two characters of your configuration list name (ATCCONxx).</li>
+    </ol>
+    <h5 style="font-size: 20px" class="A"><b>VTAM Start Options</b></h5>
+    <p class="A">VTAM start options define such things as buffer pools, major nodes to be activated when the VTAM program is started, the network name, and the identifier given to the VTAM program for the host subarea. The only VTAM start options that you need to code are SSCPID=n, NETID=n, and SSCPNAME=n. However, most users need to specify some options, especially the host subarea (HOSTSA=n). All subareas within a network must be unique.</p>
+    <p class="A">Code VTAM start options in a major node named ATCSTRyy, where yy is specified by the user. The default value is 00. You can code start options in more than one file. The VTAM program always processes the file named ATCSTR00. You can add additional start options in another file as was done in the sample network.</p>
+    <p class="A">Start options that apply to all hosts in the network are coded in major node ATCSTR00. The VTAM program processes default values first. Default values are overridden by ATCSTRyy. Start options specific to host A01MPU are coded in major node ATCSTR01. Both nodes are processed when the VTAM program</p>
+    <p class="A">is started. ATCSTR00, the default value, is always processed. ATCSTR01 is processed when the operator starts the VTAM program and identifies 01 as the start option list by entering:</p>
+    <p style="background-color: lightgray" class="A">s cnmnet.net,,,(list=01)</p>
+    <p class="A">If the same option is coded in both ATCSTR00 and ATCSTR01, the option coded in ATCSTR01 takes precedence.</p>
+    <p class="A">The VTAM start options for B01MPU in NETB are coded in ATCSTRB1. To start the VTAM program in host B01MPU, enter:</p>
+    <p style="background-color: lightgray" class="A">s cnmnet.net,,,(list=B1)</p>
+    <h6 class="A"><b>ATCSTR00 (CNMS0010) (VTAM Startup Options)</b></h6>
+    <p class="A">
+     ATCSTR00, the default start option file, is on the distribution media. If you want to use these definitions in your network:
+   </p>
+    <ol class="A">
+    <li>Check the PPOLOG start option. This option is used to specify whether messages are sent to the network log. The sample network uses the default value of PPOLOG=NO. If you are running a release of the VTAM program before V3R3, change this value to PPOLOG=YES to keep the status monitor panels in the NetView program accurate.</li>
+    <li>Review the default values for each start option. Default values are coded for all start options except TRACE and IOBUF.</li>    
+    <li>Check the TRACE start option. This option indicates which functions are traced when the VTAM program is started. OPT=ALL was coded here, meaning all functions are traced when the VTAM program is started. To conserve storage, delete the OPT=ALL operand or specify a specific function that you want to trace.</li>    
+    <li>Check the IOBUF start option. This option is the message pool in fixed storage and is used for input/ output data. For the sample network, this option is set to 256 bytes. This represents the value of the UNITSZ operand on the NETA definition statements in A04A54C (CNMS0065) and A31A54C (CNMS0066). The value of the UNITSZ operand on the NETB definition statement in B30A54C (CNMS0109) is set to 384 bytes.</li>    
+    </ol>
+    <h7 class="A"><b>ATCSTR01 (CNMS0007) (Start Options for Host Subarea)</b></h7>
+    <p class="A">ATCSTR01 is the second start option file coded for A01MPU in NETA. The start option file coded for B01MPU in NETB is ATCSTRB1 (CNMS0101). If you want to use these definitions in your network:</p>
+    <ol class="A">
+    <li>Change the HOSTPU keyword parameter to the physical unit name that you want assigned to the VTAM program. In this example, the HOSTPU keyword parameter is the SSCP name followed by the string PU (for example: A01MPU). The HOSTPU name is displayed on some NetView panels.</li>
+    <li>Change the HOSTSA keyword parameter to match your host subarea.</li>    
+    <li>Change the NETID keyword parameter to match your network name. The NETID keyword is a required parameter. If you code the NETID keyword parameter using the NLDM.NETID statement in the CNMSTYLE member, the NETID keyword parameter must be the same as the start parameter that you used for the VTAM program.</li>    
+    <li>Change the SSCPID keyword parameter to a number that is unique within your network and across all interconnected networks. In this example, the host subarea is also used for the SSCPID keyword parameter.</li>    <li>Change the SSCPNAME keyword parameter to the name you want to use for your SSCP. You can use the name A01M.</li>    
+    <li>You might want to add the CSA24 start option. This start option is used to specify the maximum amount of 24-bit common storage area that the VTAM program can access.</li>    
+    </ol>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\106.png" class="A"><br>
+    <h8 style="font-size: 15px;" class="A"><b>Configuration Start List</b></h8>
+    <p class="A">The configuration list must be named ATCCONxx, where xx is defined by the user. You identify the file name to the VTAM program with a start option. For example, if you have coded<b>config=01</b>, the VTAM program expects to find a configuration list named ATCCON01. ATCCON01 is coded for host A01MPU. It contains all the major nodes that are activated when the VTAM program is initialized, except the NCPs (which can also be initialized but are not initialized in this example). If you intend to use this list in your own network, change the major node names to match the major nodes your host activates.</p>
+    <h9 class="A">ATCCON01 (CNMS0003) (Configuration Start List)</h9>
+    <p class="A">The configuration list coded for host A01MPU in NETA is included on the distribution media. Sample configuration lists for A02MPU and A99MPU are also included on the distribution media. They are ATCCON02 (CNMS0004) and ATCCON99 (CNMS0005), respectively. The configuration list coded for B01MPU in NETB is ATCCONB1 (CNMS0102).</p>
+    <h10 class="A"><b>CNMCON01 (CNMS0084) (Major Nodes Not Activated During VTAM Initialization)</b></h10>
+    <p class="A">The STATMON preprocessor CNMNDEF (CNMSJ007) uses this major node to inform the status monitor which resources at this VTAM host (A01MPU) were not activated during VTAM initialization. The STATMON preprocessor also informs the status monitor that these resources need to be monitored. To use this sample in your network, change the node names to match the major nodes (in your host) that must not be activated during VTAM initialization.</p>
+    <p class="A">Also included on the distribution media are equivalent samples for A02MPU and A99MPU. They are CNMCON02 (CNMS0085) and CNMCON99 (CNMS0086) respectively. The major node coded for B01MPU in NETB is CNMCONB1 (CNMS0103).</p>
+    <h11 style="font-size: 15px;" class="A"><b>Application Programs</b></h11>
+    <p class="A">Each VTAM application program must be defined with an APPL definition statement. The statement is coded in an application major node defined with a VBUILD statement (TYPE=APPL).</p>
+    <p class="A">In the sample network, the following major nodes are available for host A01MPU:</p>
+    <h12 class="A"><b>A01APPLS</b></h12>
+    <p class="A">Defines application programs common to all operating systems. APPL statements for the NetView program are in this major node.</p>
+    <h13 class="A"><b>A01MVS</b></h13>
+    <p class="A">Defines MVS-based application programs, such as TSO and NetView Performance Monitor (NPM).</p>
+    <h14 class="A"><b>A01NVAS</b></h14>
+    <p class="A">Defines NetView access services application major node.</p>
+    <h15 class="A"><b>A01USER</b></h15>
+    <p class="A">Defines additional application programs, such as IMS and CICS </p>
+    <p class="A">A detailed description of each application major node follows.</p>
+    <h16 class="A"><b>A01APPLS (CNMS0013) (NetView APPL Definitions for Subarea)</b></h16>
+    <p class="A">A01APPLS is the first APPL major node coded for A01MPU. The application major node coded for B01MPU in NETB is B01APPLS (CNMS0113). If you want to use these definitions in your network, perform these steps:</p>
+    <ol class="A">
+        <li>For each APPL statement, check the names of the logon mode table and default logon mode. The sample network uses a logon mode table called AMODETAB and various default logon modes.</li>
+        <li>Check the description in each STATOPT operand. The lines beginning with STATOPT are operands used by the status monitor component of the NetView program. The VTAM program interprets these lines as comments, so they have no effect if you do not use the NetView program. The STATOPT operands control the functions of the status monitor and are coded in the major and minor node members in VTAMLST. The STATOPT operands are displayed on the status monitor panel.</li>
+        <li>If you plan to have more than 10 concurrent NetView users, add additional &CNMDOMN.nnn and TAF01nnn APPL statements.</li>
+    </ol>
+    <p class="A"><B>Note:</B>If the status monitor preprocessor is not used, define one APPL statement for NetView users and one APPL statement for TAF. For more information, see <q>“Defining Multiple Concurrent NetView Operators” on page 31 </q>and <q>“Allowing for Additional TAF LU1 Operators” on page 32</q>.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\107.png" class="A"><br>
+    <h18 class="A"><b>A01MVS (CNMS0047) (MVS Unique APPL Definitions)</b></h18>
+    <p class="A">A01MVS is an APPL major node coded for host A01MPU. The APPL major node coded for NETB is B01MVS (CNMS0111). If you want to use these definitions in your network, complete the following steps:</p>
+    <ol class="A">
+    <li>If you plan to have more than 10 concurrent TSO users, add additional TSOA01nn APPL statements.</li>
+    <li>This major node contains APPL definitions for NPM. The sample network does not contain NPM. This definition is included only as an example. If you do not plan to run NPM in your network, you can remove the NPM APPL definition.</li>
+    <li>Add APPL statements for any other VTAM applications you plan to run.</li>
+    </ol>
+    <h19 class="A"><b>A01NVAS (CNMS0087) (Defines NetView APPL Statements)</b></h19>
+    <p class="A">This major node contains APPL statements for the NetView access services (NVAS) application. If you want to use these definitions in your network, complete the following steps:</p>
+    <ol class="A">
+    <li>If you are not using NVAS, remove this sample. EMSMODE is a logon mode table shipped with the NVAS product and is not a part of the samples shipped with the NetView program.</li>
+    <li>If you plan to have more than 10 concurrent users for NVAS, add additional PSA01nnn APPL statements</li>
+    </ol>
+    <h20 class="A B">A01USER (CNMS0041) (Defines APPL Samples)</h20>
+    <p class="A">This major node contains definitions for other VTAM application programs, such as IMS and CICS.</p>
+    <h21 style="font-size: 20px;" class="A"><b>Local Non-SNA Terminals</b></h21>
+    <p class="A">Host A01MPU in the sample network has six local non-SNA 3277 terminals that you must define to the VTAM program. The definition is done with a local non-SNA major node. This major node consists of an LBUILD statement followed by a LOCAL statement for each terminal. The local non-SNA major node for A01MPU is named A01LOCAL (CNMS0016). The local non-SNA terminal major node coded for NETB is B01LOCAL (CNMS0108). The terminals defined by A01LOCAL are illustrated by<q>Figure 33 on page 109</q>.</p>
+    <p class="A">If you want to use these definitions in your network, complete the following steps:</p>
+    <ol class="A">
+    <li>Verify that the terminal types match the non-SNA terminals in your network. Check the model numbers and the use of the extended data stream feature. (The sample network uses 3277 Model 2 terminals, which use the extended data stream feature.)</li>
+    <li>Check the control unit address for each terminal. The sample network uses addresses 701 through 706. You can choose these addresses or change them to those available on your system.</li>
+    <li>Check the names of the default logon mode and logon mode table. The sample network uses a default logon mode called M2BSCQ in a logon mode table called AMODETAB.</li>
+    <li>Check the name of the USS table. The sample network uses a USS table called AUSSTAB.</li>
+    <li>Check the description in the NetView STATOPT operand to make sure that it is appropriate for the device. This description is displayed in status monitor panels.</li>
+    </ol>
+    <h22 style="font-size: 20px;" class="A"><b>Local SNA Devices</b></h22>
+    <p class="A">Besides local non-SNA terminals, host A01MPU has a channel-attached SNA control unit with six terminals and two printers attached to it. These resources must be defined to the VTAM program with a local SNA major node. This major node consists of a VBUILD TYPE=LOCAL statement, followed by a PU statement for the control unit and an LU statement for each device.</p>
+    <p class="A">The major node name is A01SNA (CNMS0073). The SNA devices defined by A01SNA are illustrated by<q>Figure 33 on page 109</q>.</p>
+    <p class="A">If you want to use these definitions in your network, complete the following steps:</p>
+    <li class="A">For the PU statement:</li>
+    <ol class="A">
+    <li>Check the control unit address (CUADDR). For the sample network, the address is 7A0.</li>
+    <li>Check the names of the default logon mode (DLOGMOD) and logon mode tables (MODETAB). In this example, the default logon mode is M23278I and the logon mode table is AMODETAB.</li>
+    <li>Check the name of the USS table. A01MPU uses a USS table called AUSSTAB.</li>
+    <li>Check the description in the NetView STATOPT operand. What you code on this operand is displayed on status monitor panels.</li>
+    </ol>
+    <li class="A">For each LU statement:</li>
+    <ol class="A">
+    <li>Make sure the local address (LOCADDR) is appropriate.</li>
+    <li>If necessary, change the default logon mode. In this example, the default logon mode for the LUs at addresses 5 and 9 (printers), was changed to the correct mode. These devices use a logon mode named M3287SCS, which is for 3287 sequential character stream (SCS) printers. The other LUs use the default value defined in the preceding PU statement.</li>
+    <li>Check the description in the NetView STATOPT operand.</li>
+    <li>Check the SSCPFM operand. If the device supports character-coded messages in its communication with the VTAM program, code SSCPFM=USSSCS. Otherwise the default value is SSCPFM=FSS, which is for formatted commands only.</li>
+    </ol>
+    <h23 style="font-size: 20px" class="A"><b>Example of Devices Defined by A01LOCAL and A01SNA</b></h23>
+    <p class="A"><q>Figure 33 on page 109</q>illustrates the local SNA and non-SNA devices defined by A01LOCAL and A01SNA.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\109.png" class="A"><br>
+    <h24 style="font-size: 20px;" class="A"><b>Cross-Domain Resources</b></h23>
+    <p class="A">The logical units (LUs) in other domains that the VTAM program accesses are called <b>cross-domain resources</b> (CDRSCs). Some cross-domain resources are applications that reside in other hosts, such as CICS and TSO. A terminal in another domain can also be a CDRSC.</p>
+    <p class="A">CDRSC definitions are not required. CDRSCs can dynamically define the owner of a CDRSC by polling other hosts in the network.</p>
+    <p class="A">You can define CDRSCs in one or more CDRSC major nodes. The major node consists of a VBUILD statement (TYPE=CDRSC), followed by a CDRSC statement for each cross-domain resource.</p>
+    <p class="A">The following sections define the cross-domain resources for A01MPU. The NETB equivalent cross- domain resource major node is B01CDRSC (CNMS0107).</p>
+    <h25 class="A"><b>A01CDRSC (CNMS0015) (Cross-Domain Resource Definitions)</b></h24>
+    <p class="A">In this example, only the NetView programs at subareas 2 (CNM02) and 99 (CNM99) are defined as CDRSCs. In this example, the owning CDRM for the NetView program is not defined. The VTAM program uses an adjacent SSCP table to locate the owning CDRM. See <q>“Adjacent SSCP Table” on page 110</q> for additional information.</p>
+    <h26 class="A"><b>A01CDRS1 (CNMS0089) (Independent LU CDRSC Major Node)</b></h26>
+    <p class="A">The cross-domain resource sample A01CDRS1 (CNMS0089) contains the independent LUs defined in the sample network for host A01MPU.</p>
+    <h27 style="font-size: 20px;" class="A"><b>Cross-Domain Resource Managers</b></h27>
+    <p class="A">The owner of a CDRSC is called a <b>cross-domain resource manager</b>(CDRM). A CDRM is the VTAM program in another host.</p>
+    <p class="A">Identify the CDRMs in all the other hosts with which your host needs to communicate. For A01MPU, these are A02M, A99M, and B01M. Also define the CDRM component of the VTAM program in your local host.
+Therefore, a CDRM statement is required for A01M, A02M, A99M, and B01M for A01MPU.
+</p>
+    <p class="A">Define each CDRM with a CDRM definition statement. The statement is coded in a CDRM major node that begins with a VBUILD statement (TYPE=CDRM).</p>
+    <p class="A">It is not necessary to define B01M to A02MPU and A99MPU because they communicate through A01MPU.</p>
+    <p class="A">To use the sample definitions, complete the following steps:</p>
+    <ol class="A">
+    <li>Change the NETID in the NETWORK statement to the name of your network. You can omit NETWORK statements if you do not use SNA Network Interconnection (SNI).</li>
+    <li>In each CDRM statement, change the label to match the name of the host being defined. In this sample and in most circumstances, use a CDRM name to match the SSCP name of the host. (Hosts <b>define</b> their SSCP names as a start option.)</li>
+    <li>Also, in each CDRM statement, ensure that the SUBAREA number is correct.</li>
+    <li>Change the ISTATUS statements for the external CDRMs (A02M, A99M, and B01M in the sample) from ACTIVE to INACTIVE if you do not want SSCP-to-SSCP sessions to be automatically established when this major node is activated.</li>
+    <li>Adjust the VPACING operand if it does not meet the needs of your network.</li>
+    <li>The CDRDYN=YES and CDRSC=OPT are coded for each CDRM. Code these operands to enable dynamic definition of cross-domain resources.</li>
+    <li>If necessary, add more CDRM statements. Include a CDRM statement for every host with which to communicate (inside or outside your network).</li>
+    </ol>
+    <h28 class="A"><b>A01CDRM (CNMS0014) (Cross-Domain Resource Manager)</b></h28>
+    <p class="A">A01CDRM defines the cross-domain resource managers in NETA to A01MPU. The CDRM major node coded for B01MPU in NETB is B01CDRM (CNMS0106).</p>
+    <h29 class="A"><b>A01CDRM1 (CNMS0088) (Cross-Domain Resource Manager)</b></h29>
+    <p class="A">This major node defines the cross domain-resource manager in NETB to A01MPU. A01CDRM1 is an example of an interconnected network CDRM.</p>
+    <p class="A">When these major nodes and the CDRM minor nodes are activated, A01M sets up sessions with the remote VTAMs—A02M, A99M, and B01M.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\110.png" class="A"><br>
+    <h30 style="font-size: 20px;" class="A">><b>Adjacent SSCP Table</b></h30>
+    <p class="A">An adjacent SSCP table is a list of SSCPs that you want the VTAM program to query when the resource is unknown. If you code an adjacent SSCP table, you can omit all or selected CDRSC statements. You can also code a CDRSC statement without defining the CDRM that owns the resource. The CDRSC is useful in networks where applications are frequently moved from one host to another.</p>
+    <p class="A">The adjacent SSCP table filed at B01MPU in NETB is B01ADJ (CNMS0104). If you want to use this table in your own network, modify it in the following way:</p>
+    <ol class="A">
+    <li>As with CDRMs, you can delete the NETWORK statement if you do not intend to use SNA Network Interconnection (SNI). If you do use SNI, you can add another adjacent SSCP table for each network. The sample network, however, uses one adjacent SSCP table for all CDRMs in NETA and NETB.</li>
+        <li>For each ADJCDRM, change the name to match the name of the hosts that are next to your host.</li>
+    </ol>
+    <p class="A">When the VTAM program searches for a CDRSC whose location is unknown, the VTAM program queries every SSCP in the list, in sequence, until it locates the resource or until it reaches the end of the list. If the VTAM program does not have a current session with an SSCP in this list, that SSCP is not queried.</p>
+    <p class="A"><q>Figure 34 on page 111</q> illustrates how default SSCP routing works. This figure illustrates what occurs when a user at host A01MPU enters:</p>
+    <p style="background-color: lightgray" class="A">cnm99</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\111.png" class="A"><br>
+    <p class="A">When the VTAM program searches its list of cross-domain resources, it tries to locate an entry for CNM99. Because there is no indication where this resource resides, the VTAM program checks an adjacent SSCP table to see if adjacent SSCPs are defined. The VTAM program then uses the table to try to locate CNM99.</p>
+    <p class="A">The first SSCP in the list is A02M. The VTAM program sends a session initiation request (CDINIT) to A02M, seeking to establish a session with CNM99. A01M has already established an SSCP-to-SSCP session with A02M. Therefore, the VTAM program knows which route to use.</p>
+    <p class="A">A02M reacts to the initiation request by searching its resources for CNM99. A02M does not find CNM99 and returns a negative response. After receiving the negative response, the VTAM program tries the next SSCP in the list, which is A99M. Here, A99M owns CNM99 and accepts the initiation request.</p>
+    <p class="A">Dynamic CDRSC definition increased the overhead required to set up this session. Explicit definition of the cross-domain resource allows the VTAM program to route the session request to its owner immediately.</p>
+    <p class="A">This increase in overhead is minor and occurs only during initial session setup. For many sites, the increased overhead might be offset by the advantages of dynamic CDRSC definition. With fewer CDRSCs, less coding is required. Also, when an application moves to a different host you do not have to change CDRSC statements.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\112.png" class="A"><br>
+    <h31 style="font-size: 25px;" class="A"><b>NCP/Token-Ring Interconnection (NTRI)</b></h31>
+    <p class="A">The NCP/Token Ring Interconnection (NTRI) allows a communication controller to attach to an IBM token-ring network using one physical medium, one attachment scheme, and one communication protocol.</p>
+    <p class="A">The NCP at subarea 04 (A04A54C) has NTRI line links that allow an NCP to connect to a token ring. To the VTAM program, NTRI links are switched links and require a switched major node.</p>
+    <p class="A">A04NTRI defines the dial deck coded for A01MPU in NETA for A04A54C NTRI lines. The dial deck coded for B01MPU in NETB for B30A54C NTRI lines is B30NTRI (CNMS0110).</p>
+    <h32 style="font-size: 20px;" class="A"><b>Channel-to-Channel Attachment</b></h32>
+    <p class="A">As the illustration of the network in <q>Figure 35 on page 112</q> shows, A01MPU has a channel-to-channel attachment to A02MPU. This attachment must be defined to the VTAM program in a channel attachment major node. The channel attachment major node consists of a VBUILD statement (TYPE=CA) followed by GROUP, LINE, and PU statements.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\112.1.png" class="A">
+    <p class="A">The major nodes named CTCA0102 (CNMS0038) and CTCA0201 (CNMS0039) define the channel attachment between A01MPU and A02MPU. If you want to use these definitions in your network, complete the following steps:</p>
+    <ol class="A">
+    <li>Check the DELAY and REPLYTO operands. Default values are coded for each. The value specified in the DELAY operand is the time in seconds that the VTAM program in A01MPU must wait before sending
+        low-priority data to the VTAM program in A02MPU. The value specified in the REPLYTO operand is the time the VTAM program must wait after completing a channel program.</li>
+    <li>Change the ADDRESS operand on the LINE statement to match the correct value for your network.</li>
+    <li>Verify that the CTC address is defined to the other host.</li>
+        </ol>
+    <h33 style="font-size: 20px;" class="A"><b>Channel-to-NCP Attachment</b></h33>
+    <p class="A">As the illustration of the sample network shows (see <q>Figure 35 on page 112</q>), A01MPU has a channel-to- NCP attachment to A04A54C as coded in CTNA0104 (CNMS0081). To use these definitions in your network, change the ADDRESS operand on the LINE statement to match the correct value for your network.</p>
+    <p class="A">The NCP channel attachment between A02MPU and A04A54C in NETA is coded in CTNA0204 (CNMS0082) and the NCP channel attachment between A99MPU and A31A54C in NETA is coded in CTNA9931 (CNMS0083). The channel-to-NCP definition coded for B01MPU in NETB is CTNB0130 (CNMS0115)</p>
+    <h34 style="font-size: 20px;" class="A"><b>Paths</b></h34>
+    <p class="A">When you know the physical structure of your network, remember to define the paths between the different nodes with PATH definition statements.</p>
+    <p class="A"><q>Figure 36 on page 113</q> illustrates the meaning of the PATH statement.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\113.png" class="A"><br>
+    <p class="A">Code a PATH statement for each subarea (host or NCP) with which the VTAM program needs to communicate. Code a PATH statement for every subarea except your own.</p>
+    <p class="A">The statement first defines the destination subarea. You can use the same statement for more than one subarea. Next, the statement must define the explicit routes and virtual routes (ERs and VRs) that make up that path.</p>
+    <p class="A">An ER defines the physical elements that connect two subareas. A VR is the logical connection between two subareas. A VR uses the physical route defined by an ER. Associate each ER with a VR. ERs have the additional characteristic of a transmission priority.</p>
+    <p class="A">The VTAM program needs both ERs and VRs to set up a session. The VTAM program begins with a VR and then uses the PATH table to determine which ER to which the VR maps. A class-of-service table tells the VTAM program which VR to use. In <q>Figure 36 on page 113</q>, if the class of service says that VR1 is to be used, then the VTAM program uses the PATH statement and map that statement into ER0.</p>
+    <p class="A">The PATH table defines the paths from A01MPU to subareas 2, 4, 31, and 99, which are the other subareas in the network. <q>Figure 35 on page 112</q> illustrates these nodes. To use this table, make the following <b>modifications</b> to each statement:</p>
+    <ol class="A">
+    <li>Change the DESTSA operands to match the subareas in your network.</li>
+    <li>Change the ER and the VR operands to fit your own routing scheme.</li>
+    <li>Add the VRPWSxy operands to fit your network or use the default values. The VRPWSxy operand defines the minimum and maximum window size for the specified virtual route and transmission priority.</li>
+    </ol>
+    <p class="A">You can use the Network and Design Analysis (NETDA) program to create your path tables.</p>
+    <p class="A">The following defines the paths for A01MPU in NETA. The sample path tables A02PATH (CNMS0025) and A99PATH (CNMS0036) for A02MPU and A99MPU in NETA are also included on the distribution media.
+    The path definition for B01MPU in NETB is B01PATH (CNMS0105).</p>
+    <p class="A">The arrows in Figure 37 on page 114 show explicit routes of host A01MPU to destination subarea 2.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\114.png" class="A"><br>
+    <h35 style="font-size: 20px;" class="A"><b>Routes</b></h35>
+    <p class="A"><q>Figure 38 on page 115</q> shows how the logon mode and the class-of-service (COS) table, along with the VTAM definitions, are used to select the route for a session.</p><br>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\115.png" class="A"><br>
+    <p class="A">In this example, a user of a terminal at address 701 in the domain of A01MPU wants to establish a cross- domain session with the NetView program at A02MPU.</p>
+    <p class="A">The user at A01MPU requests the session by entering the following command:</p>
+    <p style="background-color: lightgray" class="A">cnm02</p>
+    <p class="A">This is equivalent to entering the following command:</p>
+    <p style="background-color: lightgray" class="A">logon applid(cnm02)</p>
+    <p class="A">CNM02 is a USS command defined in the USS table of A01MPU (AUSSTAB (CNMS0011)). The formatted logon specifies an application name of CNM02, which is the name given to the NetView program at subarea 2. CNM02 is also defined to the VTAM program at A02MPU as an APPL and to the VTAM program at A01MPU as a CDRSC.</p>
+    <p class="A">The VTAM program at A01MPU carries out these steps when selecting the route:</p>
+    <ol class="A">
+        <li>A01MPU uses the USS table (not shown in <q>Figure 38 on page 115</q>) to format the logon.</li>
+    <li>The VTAM program locates the LOCAL definition statement for the terminal at address 701. As the figure illustrates, the definition for the terminal defines the logon mode table entry as M2BSCQ (DLOGMOD=M2BSCQ). The name of the logon mode table that contains this entry is also given (MODETAB=AMODETAB).</li>
+        <li>3.	The VTAM program searches AMODETAB for the logon mode table entry named M2BSCQ. In <q>Figure 38 on page 115</q>, the class of service specified for that entry is INTERACT.</li>
+    </ol>
+    <p class="A">The VTAM program at A02MPU carries out these steps in selecting the route:</p>
+    <ol class="A">
+        <li>The VTAM program searches the class-of-service table for the class named INTERACT. The class-of- service entry defines the virtual route and transmission priority for the session. In <q>Figure 38 on page 115</q> , the entry for INTERACT specifies that virtual route 0 with a transmission priority of 1 is used.</li>
+    <li>2.	The VTAM program uses its path table, specifically the definition of the path to subarea 2. The COS entry specifies that virtual route 0 is used for this session. The PATH statement maps virtual route 0 into explicit route 10 (VR0=10). Therefore the VTAM program uses explicit route 10 for this session. The PATH statement specifies the adjacent subarea and transmission group number for this ER. As the figure shows, for this ER, the VTAM program uses transmission group 1 (a channel) to subarea 2. The VTAM program activates the VR if required, completing the routing from A01MPU to A02MPU.</li>
+    </ol>
+    <p class="A">A02MPU accepts the session initiation request, and the user logs on to the NetView program.</p>
+    <h36 style="color:steelblue;"style="font-size:30px;" class="A"><b><u>VTAM Tables</u></b></h36>
+    <p class="A">Besides VTAM major nodes, you need to code the CNM routing table. You have the option of also coding the following tables:</p>
+    <li class="A">Unformatted system services (USS)</li>
+    <li class="A">Logon mode</li>
+    <li class="A">Class of service (COS)</li>
+    <p class="A">The VTAM and NetView programs provide default values or samples for each table. You can use the tables as they exist or customize them to fit the requirements of your network.</p>
+    <p class="A">If you plan to modify one or more of these tables, copy the IBM sample and change it to meet your requirements. Then assemble and link edit the table.</p>
+    <p class="A">The following sections provide an overview of each table and include a description of how to assemble and link edit a VTAM table.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\116.png" class="A"><br>
+    <h37 style="font-size: 25px;" class="A"><b>USS Table</b></h37>
+    <p class="A">You can use the USS table to define user (and operator) commands and messages. As an MVS user at subarea 01, remember to remove the VM and the VM01 commands. If hosts A02MPU and A99MPU are MVS hosts, remove the VM02 and VM99 commands. AUSSTAB (CNMS0011) is the USS table that is used for the sample network.</p>
+    <p class="A">A default USS table is also shipped with the VTAM program.</p>
+    <img src="C:\Users\91789\Desktop\HTML\24-01-24\116.1.png" class="A"><br>
+    <h38 style="font-size: 25px;" class="A"><b>Logon Mode Table</b></h38>
+    <p class="A">A logon mode table defines the session protocols for the different devices and applications in the network. The table also defines the terminal screen size and the class of service used for the session. Two logon mode tables were coded for the sample network:</p>
+    <h39 style="font-size: 20px;" class="A"><b>AMODETAB (CNMS0001</b></h39>
+    <p class="A">Supports various devices for the sample network</p>
+    <h40 style="font-size: 20px;" class="A"><b>INTERCOS (CNMS0050)</b></h40>
+    <p class="A">Supports various applications</p>
+    <p class="A">To use these tables, assemble and link-edit them into NETVIEW.V6R3USER.VTAMLIB.</p>
+    <p class="A"><b>Note:</b> Do not change RU sizes for a bisynchronous session.</p>
+    <h41 style="font-size: 25px;" class="A"><b>Class-of-Service Table</b></h41>
+    <p class="A">Use a class-of-service (COS) table to define the routes that the VTAM program uses in establishing cross- domain sessions. High-priority sessions might be assigned a class of service that uses high-speed routes. Conversely, low-priority sessions might be assigned a class of service that uses slower routes.</p>
+    <p class="A">You define a class of service by creating an entry for it in a class-of-service table. You then specify the name of the entry in the logon mode table entry to create the routes used for the session.</p>
+    <p class="A">The VTAM program does not require a class-of-service table. However, if you do not code one, the only classes of service you can use are the unnamed class of service and ISTVTCOS, which is the name the VTAM program uses to set up its own sessions.</p>
+    <p class="A">For the sample network, the COS table has five classes of service:</p>
+    <li class="A">ISTVTCOS</li>
+    <li class="A">NETOPER</li>
+    <li class="A">INTERACT</li>
+    <li class="A">BATCH</li>
+    <p class="A">All the classes of service have the same selection order but different transmission priorities. ISTVTCOS is always the class of service with the highest transmission priority. The following list shows the selection order for the unnamed class of service:</p>
+    <ol class="A">
+    <li>Virtual Route 0, Transmission Priority 0</li>
+    <li>Virtual Route 1, Transmission Priority 0</li>
+    <li>Virtual Route 2, Transmission Priority 0</li>
+    <li>Virtual Route 3, Transmission Priority 0</li>
+    <li>Virtual Route 4, Transmission Priority 0</li>
+    <li>Virtual Route 5, Transmission Priority 0</li>
+    <li>Virtual Route 6, Transmission Priority 0</li>
+    <li>Virtual Route 7, Transmission Priority 0</li>
+    </ol>
+    <h42 style="font-size: 25px;" class="A"><b>Assembling and Link-Editing the Tables</b></h42>
+    <p class="A">The CNMSJ006 sample that is shipped with the NetView program, assembles, and link-edits the USS, logon mode, and class-of-service tables.</p>
+    <h43 style="color: steelblue;" style="font-size: 30px;" class="A"><b><u>Modifying the VTAM Start Procedure</u></b></h43>
+    <p class="A">A VTAM start procedure (CNMSJ008) is included in the samples. You can use the procedure as it is shipped, or you can modify it to meet the needs of your installation. The comments in the start procedure</p>
+    <p class="A">list some considerations for modifying the start procedure. Symbolic parameters are used for the region size, data set name qualifier, and the SYSABEND output class. For example, the data set name on the VTAMLST statement results in a data set name of NETVIEW.V6R3USER.CNM01.VTAMLST. For more information about modifying the VTAM start procedure, see <q>“Modifying the VTAM Start Procedure” on page 36</q></p>

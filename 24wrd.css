@@ -1,0 +1,15 @@
+.A{
+    margin-left: 20% ;
+    margin-right: 20%;
+}
+.d2{
+    height: 1px;
+    background-color: steelblue;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+q{
+  text-decoration: underline;
+  -webkit-text-decoration-color: steelblue; /* Safari */  
+  text-decoration-color:steelblue;
+}
